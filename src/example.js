@@ -35,6 +35,7 @@ class DemoComponent extends Component {
     this.state = {
       phone1: '',
       phone2: '',
+      defaultCountry: '',
     };
   }
 
@@ -70,6 +71,7 @@ class DemoComponent extends Component {
         <div>Phone Number: {this.state.phone1 }</div>
 
         <IntlTelInput
+          separateDialCode
           onPhoneNumberChange={ this.changePhone2 }
           onPhoneNumberBlur={ this.blurHandler }
           defaultCountry={ 'jp' }
