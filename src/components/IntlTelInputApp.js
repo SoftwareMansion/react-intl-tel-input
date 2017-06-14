@@ -157,7 +157,9 @@ class IntlTelInputApp extends Component {
       this.setState({
         value: nextProps.value,
       });
-      this.updateFlagFromNumber(nextProps.value);
+      if (this.state.dialCode !== this.getDialCode(nextProps.value)) {
+        this.updateFlagFromNumber(nextProps.value);
+      }
     }
 
     if (this.props.disabled !== nextProps.disabled) {
