@@ -153,7 +153,6 @@ class IntlTelInputApp extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    console.log(nextProps);
     if (this.props.value !== nextProps.value) {
       this.setNumber(nextProps.value, !this.props.format);
     }

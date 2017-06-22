@@ -102,7 +102,6 @@ class CountryList extends Component {
   }
 
   render() {
-    console.log(this.props);
     let options = '';
     const preferredCountries = this.props.preferredCountries;
     let preferredOptions = null;
