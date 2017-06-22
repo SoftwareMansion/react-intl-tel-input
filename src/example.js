@@ -38,7 +38,7 @@ class DemoComponent extends Component {
       defaultCountry: '',
     };
     setTimeout(() => {
-      this.setState({ phone1: '', country: 'ar' });
+      this.setState({ phone1: '', country: 'de' });
     }, 2000);
   }
 

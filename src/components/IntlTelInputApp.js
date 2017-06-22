@@ -161,7 +161,8 @@ class IntlTelInputApp extends Component {
     }
 
     if (this.props.value !== nextProps.value) {
-      this.setNumber(nextProps.value, !this.props.format);
+      this.updateFlagFromNumber(nextProps.value, true);
+      this.updateValFromNumber(nextProps.value, this.props.format);
     }
 
     if (this.props.disabled !== nextProps.disabled) {
