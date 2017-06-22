@@ -153,6 +153,7 @@ class IntlTelInputApp extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
+    console.log(nextProps);
     if (this.props.value !== nextProps.value) {
       this.setNumber(nextProps.value, !this.props.format);
     }
@@ -1061,6 +1062,7 @@ class IntlTelInputApp extends Component {
     } = this.props;
 
     const {
+      value,
       dialCode,
       offsetTop,
       countryCode,
@@ -1081,8 +1083,6 @@ class IntlTelInputApp extends Component {
 
     const titleTip = (this.selectedCountryData) ?
       `${this.selectedCountryData.name}: +${this.selectedCountryData.dialCode}` : 'Unknown';
-
-    const value = this.props.value !== undefined ? this.props.value : this.state.value;
 
     const flagProps = {
       dialCode,
