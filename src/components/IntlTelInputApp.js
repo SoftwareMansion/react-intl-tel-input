@@ -115,7 +115,7 @@ class IntlTelInputApp extends Component {
     }
 
     // if separateDialCode then doesn't make sense to
-    // A) insert dial code into input (autoHideDialCode), and
+    // A) insert dial code into input  (autoHideDialCode), and
     // B) display national numbers (because we're displaying the country dial code next to them)
     if (this.props.separateDialCode) {
       this.autoHideDialCode = false;
@@ -153,6 +153,13 @@ class IntlTelInputApp extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
+    const tempCountry = this.getTempCountry(nextProps.defaultCountry);
+
+    if (this.tempCountry !== tempCountry) {
+      this.tempCountry = tempCountry;
+      this.setFlag(tempCountry, true);
+    }
+
     if (this.props.value !== nextProps.value) {
       this.setNumber(nextProps.value, !this.props.format);
     }

@@ -38,7 +38,7 @@ class DemoComponent extends Component {
       defaultCountry: '',
     };
     setTimeout(() => {
-      this.setState({ phone1: '+48 666 666 512' });
+      this.setState({ phone1: '', country: 'ar' });
     }, 2000);
   }
 
@@ -65,7 +65,7 @@ class DemoComponent extends Component {
           separateDialCode
           onPhoneNumberChange={ this.changePhone1 }
           onPhoneNumberBlur={ this.blurHandler }
-          defaultCountry={ 'auto' }
+          defaultCountry={ this.state.country }
           value={ this.state.phone1 }
           geoIpLookup={ lookup }
           css={ ['intl-tel-input', 'form-control'] }
