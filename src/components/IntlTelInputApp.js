@@ -95,7 +95,7 @@ class IntlTelInputApp extends Component {
     this.searchForCountry = this.searchForCountry.bind(this);
     this.handleEnterKey = this.handleEnterKey.bind(this);
     this.toggleDropdown = this.toggleDropdown.bind(this);
-    this.handleUpDownKey = this.handleUpDownKey.bind(this);
+    // this.handleUpDownKey = this.handleUpDownKey.bind(this);
     this.handleInputChange = this.handleInputChange.bind(this);
     this.changeHighlightCountry = this.changeHighlightCountry.bind(this);
     this.formatNumber = this.formatNumber.bind(this);
@@ -154,10 +154,7 @@ class IntlTelInputApp extends Component {
 
   componentWillReceiveProps(nextProps) {
     if (this.props.value !== nextProps.value) {
-      this.setState({
-        value: nextProps.value,
-      });
-      this.updateFlagFromNumber(nextProps.value, !this.state.dialCode);
+      this.setNumber(nextProps.value, !this.props.format);
     }
 
     if (this.props.disabled !== nextProps.disabled) {
@@ -475,12 +472,8 @@ class IntlTelInputApp extends Component {
       }
     }
 
-    const doNotify = true;
-
-    // NOTE: if tempCountry is set to auto, that will be handled separately
-    // format
     if (val) {
-      this.updateValFromNumber(val, this.props.formatOnInit, doNotify);
+      this.updateValFromNumber(val, this.props.formatOnInit);
     }
   }
 
@@ -568,28 +561,28 @@ class IntlTelInputApp extends Component {
   }
 
   // highlight the next/prev item in the list (and ensure it is visible)
-  handleUpDownKey(key) {
-    const current = this.flagDropDown.querySelectorAll('.highlight')[0];
-    const prevElement = (current) ? current.previousElementSibling : undefined;
-    const nextElement = (current) ? current.nextElementSibling : undefined;
-    let next = (key === this.keys.UP) ? prevElement : nextElement;
-
-    if (next) {
-      // skip the divider
-      if (next.getAttribute('class').indexOf('divider') > -1) {
-        next = (key === this.keys.UP) ? next.previousElementSibling : next.nextElementSibling;
-      }
-
-      this.scrollTo(next);
-
-      const selectedIndex = utils.retrieveLiIndex(next);
-
-      this.setState({
-        showDropdown: true,
-        highlightedCountry: selectedIndex,
-      });
-    }
-  }
+  // handleUpDownKey(key) {
+  //   const current = this.flagDropDown.querySelectorAll('.highlight')[0];
+  //   const prevElement = (current) ? current.previousElementSibling : undefined;
+  //   const nextElement = (current) ? current.nextElementSibling : undefined;
+  //   let next = (key === this.keys.UP) ? prevElement : nextElement;
+  //
+  //   if (next) {
+  //     // skip the divider
+  //     if (next.getAttribute('class').indexOf('divider') > -1) {
+  //       next = (key === this.keys.UP) ? next.previousElementSibling : next.nextElementSibling;
+  //     }
+  //
+  //     this.scrollTo(next);
+  //
+  //     const selectedIndex = utils.retrieveLiIndex(next);
+  //
+  //     this.setState({
+  //       showDropdown: true,
+  //       highlightedCountry: selectedIndex,
+  //     });
+  //   }
+  // }
 
   // select the currently highlighted item
   handleEnterKey() {
@@ -657,7 +650,6 @@ class IntlTelInputApp extends Component {
       number = window.intlTelInputUtils.formatNumber(number,
         this.selectedCountryData.iso2, format);
     }
-
     number = this.beforeSetNumber(number);
 
     this.setState({
@@ -897,8 +889,8 @@ class IntlTelInputApp extends Component {
 
   notifyPhoneNumberChange(newNumber) {
     if (typeof this.props.onPhoneNumberChange === 'function') {
-      const isValid = this.isValidNumber(newNumber);
       const fullNumber = this.formatFullNumber(newNumber);
+      const isValid = this.isValidNumber(fullNumber);
 
       this.props.onPhoneNumberChange(
         isValid, newNumber, this.selectedCountryData,
@@ -950,10 +942,11 @@ class IntlTelInputApp extends Component {
     // and enter key from submitting a form etc
     e.preventDefault();
 
-    if (e.which === this.keys.UP || e.which === this.keys.DOWN) {
-      // up and down to navigate
-      this.handleUpDownKey(e.which);
-    } else if (e.which === this.keys.ENTER) {
+    // if (e.which === this.keys.UP || e.which === this.keys.DOWN) {
+    //   // up and down to navigate
+    //   this.handleUpDownKey(e.which);
+    // } else
+    if (e.which === this.keys.ENTER) {
       // enter to select
       this.handleEnterKey();
     } else if (e.which === this.keys.ESC) {
@@ -1001,13 +994,13 @@ class IntlTelInputApp extends Component {
 
     if (this.props.value !== undefined) {
       this.updateFlagFromNumber(value);
-      this.notifyPhoneNumberChange(value);
+      this.notifyPhoneNumberChange(e.target.value);
     } else {
       this.setState({
         value,
       }, () => {
         this.updateFlagFromNumber(value);
-        this.notifyPhoneNumberChange(value);
+        this.notifyPhoneNumberChange(e.target.value);
       });
     }
   }
