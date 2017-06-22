@@ -34,9 +34,12 @@ class DemoComponent extends Component {
     super(props);
     this.state = {
       phone1: '',
-      phone2: '',
+      phone2: '+48 512 512 512',
       defaultCountry: '',
     };
+    setTimeout(() => {
+      this.setState({ phone1: '+48 666 666 512' });
+    }, 2000);
   }
 
   componentWillMount() {
@@ -59,6 +62,7 @@ class DemoComponent extends Component {
     return (
       <div>
         <IntlTelInput
+          separateDialCode
           onPhoneNumberChange={ this.changePhone1 }
           onPhoneNumberBlur={ this.blurHandler }
           defaultCountry={ 'auto' }
@@ -70,7 +74,7 @@ class DemoComponent extends Component {
         />
         <div>Phone Number: {this.state.phone1 }</div>
 
-        <IntlTelInput
+        {/* <IntlTelInput
           separateDialCode
           onPhoneNumberChange={ this.changePhone2 }
           onPhoneNumberBlur={ this.blurHandler }
@@ -78,7 +82,7 @@ class DemoComponent extends Component {
           value={ this.state.phone2 }
           css={ ['intl-tel-input', 'form-control'] }
           utilsScript="libphonenumber.js"
-        />
+        /> */}
         <div>Phone Number: {this.state.phone2}</div>
       </div>
     );

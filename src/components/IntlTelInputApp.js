@@ -1052,9 +1052,26 @@ class IntlTelInputApp extends Component {
   }
 
   render() {
-    this.wrapperClass[this.props.css[0]] = true;
-    const inputClass = this.props.css[1];
-    const wrapperStyle = Object.assign({}, this.props.style || {});
+    const {
+      flagDropDown: FlagDropDownComponent,
+      countryListRenderer,
+      separateDialCode,
+      style,
+      css,
+    } = this.props;
+
+    const {
+      dialCode,
+      offsetTop,
+      countryCode,
+      outerHeight,
+      showDropdown,
+      highlightedCountry,
+    } = this.state;
+
+    this.wrapperClass[css[0]] = true;
+    const inputClass = css[1];
+    const wrapperStyle = Object.assign({}, style || {});
 
     if (this.state.showDropdown) {
       this.wrapperClass.expanded = true;
@@ -1067,28 +1084,31 @@ class IntlTelInputApp extends Component {
 
     const value = this.props.value !== undefined ? this.props.value : this.state.value;
 
+    const flagProps = {
+      dialCode,
+      titleTip,
+      countryCode,
+      showDropdown,
+      separateDialCode,
+      highlightedCountry,
+      inputTop: offsetTop,
+      countryListRenderer,
+      setFlag: this.setFlag,
+      isMobile: this.isMobile,
+      countries: this.countries,
+      inputOuterHeight: outerHeight,
+      allowDropdown: this.allowDropdown,
+      refCallback: this.setFlagDropdownRef,
+      dropdownContainer: this.dropdownContainer,
+      clickSelectedFlag: this.clickSelectedFlag,
+      preferredCountries: this.preferredCountries,
+      changeHighlightCountry: this.changeHighlightCountry,
+      handleSelectedFlagKeydown: this.handleSelectedFlagKeydown,
+    };
+
     return (
       <div className={ wrapperClass } style={ wrapperStyle }>
-        <FlagDropDown
-          refCallback={ this.setFlagDropdownRef }
-          allowDropdown={ this.allowDropdown }
-          dropdownContainer={ this.dropdownContainer }
-          separateDialCode={ this.props.separateDialCode }
-          dialCode={ this.state.dialCode }
-          clickSelectedFlag={ this.clickSelectedFlag }
-          setFlag={ this.setFlag }
-          countryCode={ this.state.countryCode }
-          isMobile={ this.isMobile }
-          handleSelectedFlagKeydown={ this.handleSelectedFlagKeydown }
-          changeHighlightCountry={ this.changeHighlightCountry }
-          countries={ this.countries }
-          showDropdown={ this.state.showDropdown }
-          inputTop={ this.state.offsetTop }
-          inputOuterHeight={ this.state.outerHeight }
-          preferredCountries={ this.preferredCountries }
-          highlightedCountry={ this.state.highlightedCountry }
-          titleTip={ titleTip }
-        />
+        <FlagDropDownComponent { ...flagProps } />
         <TelInput
           refCallback={ this.setTelRef }
           handleInputChange={ this.handleInputChange }
@@ -1110,6 +1130,11 @@ class IntlTelInputApp extends Component {
 }
 
 IntlTelInputApp.propTypes = {
+  countryListRenderer: PropTypes.func,
+  flagDropDown: PropTypes.oneOfType([
+    PropTypes.object,
+    PropTypes.func,
+  ]), // eslint-disable-line react/forbid-prop-types
   css: PropTypes.arrayOf(PropTypes.string),
   fieldName: PropTypes.string,
   fieldId: PropTypes.string,
@@ -1149,6 +1174,8 @@ IntlTelInputApp.defaultProps = {
   fieldName: '',
   fieldId: '',
   defaultValue: '',
+  flagDropDown: FlagDropDown,
+  countryListRenderer: FlagDropDown.defaultProps.countryListRenderer,
   // define the countries that'll be present in the dropdown
   // defaults to the data defined in `AllCountries`
   countriesData: null,
