@@ -897,7 +897,14 @@ class IntlTelInputApp extends Component {
 
   notifyPhoneNumberChange(newNumber) {
     if (typeof this.props.onPhoneNumberChange === 'function') {
-      const fullNumber = this.formatFullNumber(newNumber);
+      let fullNumber = newNumber;
+
+      if (this.props.format) {
+        fullNumber = this.formatFullNumber(newNumber);
+      } else {
+        fullNumber = this.getFullNumber(newNumber);
+      }
+
       const isValid = this.isValidNumber(fullNumber);
 
       this.props.onPhoneNumberChange(

@@ -70,7 +70,7 @@ class DemoComponent extends Component {
           geoIpLookup={ lookup }
           css={ ['intl-tel-input', 'form-control'] }
           utilsScript="libphonenumber.js"
-          format
+          format={ false }
         />
         <div>Phone Number: {this.state.phone1 }</div>
 
